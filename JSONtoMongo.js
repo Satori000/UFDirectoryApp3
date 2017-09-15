@@ -59,7 +59,7 @@ function addEntries(entries) {
     //console.log("heeeeey2");
     newListing = Listing({
       code: "HAL",
-      name: "fuck this shit",
+      name: "hi",
       coordinates: {
         latitude: 4.2,
         longitude: 89.6
