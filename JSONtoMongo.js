@@ -8,41 +8,18 @@ var fs = require('fs'),
     Schema = mongoose.Schema,
     Listing = require('./ListingSchema.js'),
     config = require('./config.js');
-mongoose.Promise = require('bluebird');
+//mongoose.Promise = require('bluebird');
 //mongoose.Promise = global.Promise
 /* Connect to your database */
-mongoose.connect('mongodb://shakeeb:loosevoon@ds129434.mlab.com:29434/ufdirectoryassignment3', {
+//console.log(config.db.uri);
+mongoose.connect(config.db.uri, {
   useMongoClient: true
-  /* other options */
 });
-
-/*
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
-
-var mongodbUri = 'mongodb://shakeeb:loosevoon@ds129434.mlab.com:29434/ufdirectoryassignment3';
-
-mongoose.connect(mongodbUri, options);
-var conn = mongoose.connection;
-
-conn.on('error', console.error.bind(console, 'connection error:'));
-
-conn.once('open', function() {
-  // Wait for the database connection to establish, then start the app.
-});*/
-
-//var connection = mongoose.connection;
-/*mongoose.connection.on('error', function (err) {
- console.log("fuck");
-});*/
 
 /*
   Instantiate a mongoose model for each listing object in the JSON file,
   and then save it to your Mongo database
  */
-
-
-
 
  var content;
  // First I want to read the file
@@ -54,7 +31,7 @@ conn.once('open', function() {
 
      // Invoke the next step here however you like
      var obj = JSON.parse(data);
-     console.log(obj.entries[0].code);
+     //console.log(obj.entries[0].code);
 
      addEntries(obj.entries);
         // Put all of the code here (not the best solution)
@@ -62,12 +39,12 @@ conn.once('open', function() {
  });
 
 function addEntries(entries) {
-var listing = mongoose.model('Listing', Listing.listingSchema);
-entries.forEach( function (entry) {
+  var listing = mongoose.model('Listing', Listing.listingSchema);
+  entries.forEach( function (entry) {
   var newListing;
   if (entry.coordinates != undefined && entry.address != undefined) {
     //console.log("heeeeey1");
-    newListing = listing({
+    newListing = Listing({
       code: entry.code,
       name: entry.name,
       coordinates: {
@@ -76,9 +53,11 @@ entries.forEach( function (entry) {
       },
       address: entry.address
     });
+
+
   } else {
     //console.log("heeeeey2");
-    newListing = listing({
+    newListing = Listing({
       code: "HAL",
       name: "fuck this shit",
       coordinates: {
@@ -98,12 +77,15 @@ entries.forEach( function (entry) {
       address: undefined
     }); */
   }
-  console.log(mongoose.connection.readyState);
+  //console.log(mongoose.connection.readyState);
 
-  console.log(newListing);
+  //console.log(newListing);
   newListing.save(function(err) {
-    if (err)
-     throw err;
+    if (err) {
+      console.log('Error');
+      throw err;
+    }
+
 
     console.log('Listing created!');
   });
