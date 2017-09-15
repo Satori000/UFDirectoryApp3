@@ -41,32 +41,9 @@ mongoose.connect(config.db.uri, {
 function addEntries(entries) {
   var listing = mongoose.model('Listing', Listing.listingSchema);
   entries.forEach( function (entry) {
-  var newListing;
-  if (entry.coordinates != undefined && entry.address != undefined) {
+    var newListing;
     //console.log("heeeeey1");
-    newListing = Listing({
-      code: entry.code,
-      name: entry.name,
-      coordinates: {
-        latitude: entry.coordinates.latitude,
-        longitude: entry.coordinates.longitude
-      },
-      address: entry.address
-    });
-
-
-  } else {
-    //console.log("heeeeey2");
-    newListing = Listing({
-      code: "HAL",
-      name: "hi",
-      coordinates: {
-        latitude: 4.2,
-        longitude: 89.6
-      },
-      address: "hello"
-
-    });
+    newListing = new Listing(entry);
     /*newListing = Listing({
       code: entry.code,
       name: entry.name,
@@ -76,20 +53,20 @@ function addEntries(entries) {
       },
       address: undefined
     }); */
-  }
+
   //console.log(mongoose.connection.readyState);
 
-  //console.log(newListing);
-  newListing.save(function(err) {
-    if (err) {
-      console.log('Error');
-      throw err;
-    }
+    console.log(newListing);
+    newListing.save(function(err) {
+      if (err) {
+        console.log('Errorrrr');
+        throw err;
+      }
 
 
-    console.log('Listing created!');
+      console.log('Listing created!');
+    });
   });
-});
 
 }
 /*
